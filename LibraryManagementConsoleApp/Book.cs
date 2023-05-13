@@ -8,10 +8,17 @@ namespace LibraryManagementConsoleApp
 {
 	internal class Book
 	{
+		private Guid bookId { get; set; }
+
 		public string Title { get; set; }
-		public int BookId { get; set; }
 		public string Author { get; set; }
 		public string ISBN { get; set; }
 		public bool IsAvailable { get; set; }
+
+		public Guid BookId {
+			get { return bookId; }
+			set { bookId = value; }
+		}
+
 	}
 }

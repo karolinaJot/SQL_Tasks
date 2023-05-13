@@ -2,6 +2,7 @@
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,8 @@ using System.Threading.Tasks;
 namespace LibraryManagementConsoleApp
 {
 	internal class BorrowersRepository
+
+	
 	{
 
 		private string connectionString =
@@ -31,6 +34,8 @@ namespace LibraryManagementConsoleApp
 						while (reader.Read())
 						{
 							Borrower borrower = new Borrower();
+
+							//borrower.BorrowerId = reader.GetGuid(reader.GetOrdinal("BorrowerID"));  ---- not working
 							borrower.BorrowerId = Guid.Parse(reader.GetString(reader.GetOrdinal("BorrowerID")));
 							borrower.Name = reader.GetString(reader.GetOrdinal("Name"));
 							borrower.Email = reader.GetString(reader.GetOrdinal("Email"));
@@ -130,12 +135,12 @@ namespace LibraryManagementConsoleApp
 			{
 				try
 				{
-
 					connection.Open();
 
 					using (SqlCommand command =
-						new SqlCommand("UPDATE Borrowers SET Name=@Name, Email=@Email, Phone=@Phone, TotalBorrowedBooks=@TotalBorrowedBooks WHERE BorrowerID = @BorrowerID", connection))
+						new SqlCommand("UPDATE Borrowers SET Name=@Name, Email =@Email, Phone =@Phone, TotalBorrowedBooks =@TotalBorrowedBooks WHERE BorrowerID = @BorrowerID", connection))
 					{
+						command.Parameters.AddWithValue("@BorrowerID", editedBorrower.BorrowerId);
 						command.Parameters.AddWithValue("@Name", editedBorrower.Name);
 						command.Parameters.AddWithValue("@Email", editedBorrower.Email);
 						command.Parameters.AddWithValue("@Phone", editedBorrower.Phone);
