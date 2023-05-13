@@ -8,10 +8,19 @@ namespace LibraryManagementConsoleApp
 {
 	internal class Borrower
 	{
+		private Guid borrowerId { get; set; }
+
 		public string Name { get; set; }
-		public int BorrowerId { get; set; }
 		public string Email { get; set; }
-		public int Phone { get; set; }
+		public string Phone { get; set; }
 		public int TotalBorrowedBooks { get; set; }
+
+		public Guid BorrowerId
+		{
+			get { return borrowerId; }
+			set { borrowerId = value; }
+		}
+
+
 	}
 }
