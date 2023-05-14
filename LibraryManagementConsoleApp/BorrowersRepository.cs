@@ -49,6 +49,52 @@ namespace LibraryManagementConsoleApp
 				return borrowerList.ToArray();
 			}
 		}
+		public Borrower[] GetSelectedBorrowers(string searchType, string searchTerm)
+		{
+			List<Borrower> borrowerList = new List<Borrower>();
+
+			using (SqlConnection connection = new SqlConnection(connectionString))
+			{
+				try
+				{
+					connection.Open();
+
+					using (SqlCommand command =
+						new SqlCommand($"SELECT BorrowerID, Name, Email, Phone, TotalBorrowedBooks FROM Borrowers WHERE {searchType} LIKE '%' + @searchTerm + '%'", connection))
+					{
+						command.Parameters.AddWithValue("@searchTerm", searchTerm);
+
+						using (SqlDataReader reader = command.ExecuteReader())
+						{
+							while (reader.Read())
+							{
+								Borrower borrower = new Borrower();
+
+								borrower.BorrowerId = reader.GetGuid(reader.GetOrdinal("BorrowerID"));
+								borrower.Name = reader.GetString(reader.GetOrdinal("Name"));
+								borrower.Email = reader.GetString(reader.GetOrdinal("Email"));
+								borrower.Phone = reader.GetString(reader.GetOrdinal("Phone"));
+								borrower.TotalBorrowedBooks = reader.GetInt32(reader.GetOrdinal("TotalBorrowedBooks"));
+
+								borrowerList.Add(borrower);
+							}
+						}
+					}
+
+					return borrowerList.ToArray();
+				}
+				catch (SqlException exception)
+				{
+					Console.WriteLine("An error occurred while connecting to the database or executing the command: " + exception.Message);
+				}
+				catch (Exception exception)
+				{
+					Console.WriteLine("An unexpected error occurred: " + exception.Message);
+				}
+
+			}
+			return borrowerList.ToArray();
+		}
 
 		public void AddBorrower(Borrower borrower)
 		{

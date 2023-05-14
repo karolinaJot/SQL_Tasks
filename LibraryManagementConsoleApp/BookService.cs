@@ -320,9 +320,9 @@ namespace LibraryManagementConsoleApp
 			int index = 1;
 			foreach (Book b in books)
 			{
-				string available = b.IsAvailable ? "available" : "not available";
+				string available = b.IsAvailable ? "yes" : "no";
 
-				Console.WriteLine($"\n{index}. {b.Title}, {b.Author}, {b.ISBN}, {available}");
+				Console.WriteLine($"\n{index}. Title: {b.Title}, Author: {b.Author}, ISBN: {b.ISBN}, Is available: {available}");
 				index++;
 			}
 		}
