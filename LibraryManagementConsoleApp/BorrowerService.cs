@@ -7,7 +7,7 @@ using static System.Reflection.Metadata.BlobBuilder;
 
 namespace LibraryManagementConsoleApp
 {
-	internal class BorrowerService
+	public class BorrowerService
 	{
 		public bool HandleBorrowerAction()
 		{
@@ -155,7 +155,7 @@ namespace LibraryManagementConsoleApp
 			catch { Console.WriteLine("Somthing went wrong. Try again."); }
 		}
 
-		private void DisplayBorrowerList()
+		public void DisplayBorrowerList()
 		{
 			BorrowersRepository borrowersRepository = new BorrowersRepository();
 			Borrower[] borrowers = borrowersRepository.GetBorrowers();
@@ -294,7 +294,7 @@ namespace LibraryManagementConsoleApp
 			int index = 1;
 			foreach (Borrower b in borrowers)
 			{
-				Console.WriteLine($"\n{index}. Name: {b.Name}, Emial: {b.Email}, Phone: {b.Phone}, Total borrowed books {b.TotalBorrowedBooks}");
+				Console.WriteLine($"\n{index}. Name: {b.Name}, Emial: {b.Email}, Phone: {b.Phone}, Total borrowed books: {b.TotalBorrowedBooks}");
 				index++;
 			}
 		}
