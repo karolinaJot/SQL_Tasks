@@ -43,7 +43,7 @@ namespace LibraryManagementConsoleApp
 
 					case 's':
 					case 'S':
-						showAgainBooks = SelectSearchType();
+						showAgainBooks = SelectSearch();
 						break;
 					
 					case 'b':
@@ -69,64 +69,11 @@ namespace LibraryManagementConsoleApp
 
 		private bool BorrowBook()
 		{
-			BooksRepository booksRepository = new BooksRepository();
-			Book[] books = booksRepository.GetBooks();
-			ShowBookList(books);
-
-			Console.WriteLine("Select book to borrow by typing index number");
-
-			bool showAgain = false;
-			bool showAgainBookActions = true;
-
-			while (!showAgain)
-			{
-				try
-				{
-					int index = int.Parse(Console.ReadLine());
-					if (index < 0 || index > books.Length)
-					{
-						showAgain = false;
-					}
-					else
-					{
-						Book bookToBorrow = books[index - 1];
-
-						if (!bookToBorrow.IsAvailable)
-						{
-							Console.WriteLine("Sorry, this book is borrowed. Try with another");
-							showAgain = false;
-						}
-						else 
-						{
-							Borrower borrower = GetBorrowerForSelectedBook();
-
-
-                        }
-						Book bookNewData = ReadBook("edit");
-
-						bookToEdit.Title = bookNewData.Title != null ? bookNewData.Title : bookToEdit.Title;
-						bookToEdit.Author = bookNewData.Author != null ? bookNewData.Author : bookToEdit.Author;
-						bookToEdit.ISBN = bookNewData.ISBN != null ? bookNewData.ISBN : bookToEdit.ISBN;
-						bookToEdit.IsAvailable = bookNewData.IsAvailable;
-
-						booksRepository.EditBook(bookToEdit);
-						showAgain = true;
-						break;
-
-					}
-				}
-				catch { showAgain = false; }
-			}
+			
+			
 		}
 
-		private Borrower GetBorrowerForSelectedBook()
-		{
-			Console.WriteLine("\nSelect borrower from the list by typing index number");
-			BorrowerService borrowerService = new BorrowerService();
-			borrowerService.DisplayBorrowerList();
-		}
-
-		private bool SelectSearchType()
+		private bool SearchBook()
 		{
 			bool showAgain = false;
 			bool showAgainBookActions = true;
