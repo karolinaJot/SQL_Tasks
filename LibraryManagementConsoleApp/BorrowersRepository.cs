@@ -35,8 +35,7 @@ namespace LibraryManagementConsoleApp
 						{
 							Borrower borrower = new Borrower();
 
-							//borrower.BorrowerId = reader.GetGuid(reader.GetOrdinal("BorrowerID"));  ---- not working
-							borrower.BorrowerId = Guid.Parse(reader.GetString(reader.GetOrdinal("BorrowerID")));
+							borrower.BorrowerId = reader.GetGuid(reader.GetOrdinal("BorrowerID"));
 							borrower.Name = reader.GetString(reader.GetOrdinal("Name"));
 							borrower.Email = reader.GetString(reader.GetOrdinal("Email"));
 							borrower.Phone = reader.GetString(reader.GetOrdinal("Phone"));
