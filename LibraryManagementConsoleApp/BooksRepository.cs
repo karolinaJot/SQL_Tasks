@@ -134,6 +134,7 @@ namespace LibraryManagementConsoleApp
 					using (SqlCommand command =
 						new SqlCommand("UPDATE Books SET Title =@Title, Author =@Author, ISBN =@ISBN, Availability =@Availability WHERE BookId = @BookId", connection))
 					{
+						command.Parameters.AddWithValue("@BookId", editedBook.BookId);
 						command.Parameters.AddWithValue("@Title", editedBook.Title);
 						command.Parameters.AddWithValue("@Author", editedBook.Author);
 						command.Parameters.AddWithValue("@ISBN", editedBook.ISBN);

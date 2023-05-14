@@ -14,7 +14,7 @@ namespace LibraryManagementConsoleApp
 
 			while (!showAgainMain)
 			{
-				Console.WriteLine("Welcome, in Library Management System!\nPress B to work with Books collection\nPress P to work with Borrowers collection");
+				Console.WriteLine("\nWelcome, in Library Management System!\nPress B to work with Books collection\nPress P to work with Borrowers collection");
 
 				ConsoleKeyInfo userResponse = Console.ReadKey();
 
@@ -25,6 +25,7 @@ namespace LibraryManagementConsoleApp
 				else if (userResponse.KeyChar == 'P' || userResponse.KeyChar == 'p')
 				{
 					result = "borrowers";
+					break;
 				}
 				else
 				{
