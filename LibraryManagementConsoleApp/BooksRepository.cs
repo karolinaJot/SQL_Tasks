@@ -163,5 +163,51 @@ namespace LibraryManagementConsoleApp
 			}
 
 		}
+
+		public Book[] GetSelectedBooks(string searchType, string searchTerm)
+		{
+			List<Book> bookList = new List<Book>();
+
+			using (SqlConnection connection = new SqlConnection(connectionString))
+			{
+				try
+				{
+
+					connection.Open();
+
+					using (SqlCommand command =
+						new SqlCommand($"SELECT BookId, Title, Author, ISBN, Availability FROM Books WHERE {searchType} LIKE '%' + @searchTerm + '%'", connection))
+					{
+						command.Parameters.AddWithValue("@searchTerm", searchTerm);
+
+						using (SqlDataReader reader = command.ExecuteReader())
+						{
+							while (reader.Read())
+							{
+								Book book = new Book();
+								book.BookId = reader.GetGuid(reader.GetOrdinal("BookId"));
+								book.Title = reader.GetString(reader.GetOrdinal("Title"));
+								book.Author = reader.GetString(reader.GetOrdinal("Author"));
+								book.ISBN = reader.GetString(reader.GetOrdinal("ISBN"));
+								book.IsAvailable = reader.GetBoolean(reader.GetOrdinal("Availability"));
+
+								bookList.Add(book);
+							}
+						}
+					}
+
+					return bookList.ToArray();
+				}
+				catch (SqlException exception)
+				{
+					Console.WriteLine("An error occurred while connecting to the database or executing the command: " + exception.Message);
+				}
+				catch (Exception exception)
+				{
+					Console.WriteLine("An unexpected error occurred: " + exception.Message);
+				}
+
+			} return bookList.ToArray();
+		}
 	}
 }

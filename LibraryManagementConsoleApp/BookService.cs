@@ -8,8 +8,150 @@ namespace LibraryManagementConsoleApp
 {
 	internal class BookService
 	{
+		public bool HandleBookAction()
+		{
+			bool showAgainMain = false;
+			bool showAgainBooks = false;
 
-		public void DisplayBookList()
+			while (!showAgainBooks)
+			{
+				Console.WriteLine("\nYou are in book section. Please select action.\nPress L to see all books in list\nPress E to edit book\nPress D to delete book\nPress A to add new book\nPress S to search book\nPress Q to quite");
+				ConsoleKeyInfo selectedAction = Console.ReadKey();
+
+				switch (selectedAction.KeyChar)
+				{
+					case 'd':
+					case 'D':
+						DeleteBook();
+						break;
+
+					case 'l':
+					case 'L':
+						DisplayBookList();
+						break;
+
+					case 'e':
+					case 'E':
+						EditBook();
+						break;
+
+					case 'a':
+					case 'A':
+						AddBook();
+						break;
+
+					case 's':
+					case 'S':
+						showAgainBooks = SelectSearchType();
+						break;
+
+					case 'q':
+					case 'Q':
+						showAgainMain = true;
+						showAgainBooks = true;
+						break;
+
+					default:
+						Console.WriteLine("\nIncorect selection. Please, try again");
+						showAgainBooks = false;
+						break;
+				}
+			}
+
+			return showAgainMain;
+		}
+
+		private bool SelectSearchType()
+		{
+			bool showAgain = false;
+			bool showAgainBookActions = true;
+
+			while (!showAgain)
+			{
+				Console.WriteLine("\nThis is search book panel");
+				Console.WriteLine("Press T to serach by title\nPress A to search by author\nPress B to serach by ISBN\nPress Q to quite");
+
+				ConsoleKeyInfo selectedSearch = Console.ReadKey();
+				switch (selectedSearch.KeyChar)
+				{
+					case 't':
+					case 'T':
+						SearchByTitle();
+						break;
+
+					case 'a':
+					case 'A':
+						SearchByAuthor();
+						break;
+
+					case 'b':
+					case 'B':
+						SearchByISBN();
+						break;
+
+					case 'q':
+					case 'Q':
+						showAgain = true;
+						showAgainBookActions = false;
+						break;
+
+					default:
+						Console.WriteLine("\nIncorect selection. Please, try again");
+						showAgain = false;
+						break;
+				}
+			}
+
+			return showAgainBookActions;
+		}
+
+		private void SearchByISBN()
+		{
+			BooksRepository booksRepository = new BooksRepository();
+
+			try
+			{
+				Console.WriteLine("\nProvide book ISBN");
+				string ISBNvalue = Console.ReadLine();
+
+				Book[] books = booksRepository.GetSelectedBooks("ISBN", ISBNvalue);
+				ShowBookList(books);
+			}
+			catch { Console.WriteLine("Somthing went wrong. Try again."); }
+
+		}
+
+		private void SearchByAuthor()
+		{
+			BooksRepository booksRepository= new BooksRepository();
+
+			try {
+				Console.WriteLine("\nProvide author");
+				string author = Console.ReadLine();
+
+				Book[] books = booksRepository.GetSelectedBooks("Author", author);
+				ShowBookList(books);
+					}
+			catch { Console.WriteLine("Somthing went wrong. Try again."); }
+		}
+
+		private void SearchByTitle()
+		{
+			BooksRepository booksRepository = new BooksRepository();
+
+			try
+			{
+				Console.WriteLine("\nProvide title");
+				string title = Console.ReadLine();
+
+				Book[] books = booksRepository.GetSelectedBooks("Title", title);
+				ShowBookList(books);
+			}
+			catch { Console.WriteLine("Somthing went wrong. Try again."); }
+		}
+
+
+		private void DisplayBookList()
 		{
 			BooksRepository booksRepository = new BooksRepository();
 			Book[] books = booksRepository.GetBooks();
@@ -17,7 +159,7 @@ namespace LibraryManagementConsoleApp
 		}
 
 
-		public void DeleteBook()
+		private void DeleteBook()
 		{
 			BooksRepository booksRepository = new BooksRepository();
 			Book[] books = booksRepository.GetBooks();
@@ -46,7 +188,7 @@ namespace LibraryManagementConsoleApp
 			}
 		}
 
-		public void EditBook()
+		private void EditBook()
 		{
 			BooksRepository booksRepository = new BooksRepository();
 			Book[] books = booksRepository.GetBooks();
@@ -75,7 +217,7 @@ namespace LibraryManagementConsoleApp
 						bookToEdit.ISBN = bookNewData.ISBN != null ? bookNewData.ISBN : bookToEdit.ISBN;
 						bookToEdit.IsAvailable = bookNewData.IsAvailable;
 
-						booksRepository.EditBook(bookToEdit);	
+						booksRepository.EditBook(bookToEdit);
 						showAgain = true;
 						break;
 
@@ -86,62 +228,15 @@ namespace LibraryManagementConsoleApp
 		}
 
 
-		public void AddBook()
+		private void AddBook()
 		{
 			BooksRepository booksRepository = new BooksRepository();
 
 			Book newBook = ReadBook("add");
 			booksRepository.AddBook(newBook);
-			
+
 		}
 
-		public bool HandleBookAction()
-		{
-			bool showAgainMain = false;
-			bool showAgainBooks = false;
-
-			while (!showAgainBooks)
-			{
-				Console.WriteLine("\nYou are in book section. Please select action.\nPress L to see all books in list\nPress E to edit book\nPress D to delete book\nPress A to add new book\nPress Q to quite");
-				ConsoleKeyInfo selectedAction = Console.ReadKey();
-
-				switch (selectedAction.KeyChar)
-				{
-					case 'd':
-					case 'D':
-						DeleteBook();
-						break;
-
-					case 'l':
-					case 'L':
-						DisplayBookList();
-						break;
-
-					case 'e':
-					case 'E':
-						EditBook();
-						break;
-
-					case 'a':
-					case 'A':
-						AddBook();
-						break;
-
-					case 'q':
-					case 'Q':
-						showAgainMain = true;
-						showAgainBooks = true;
-						break;
-
-					default:
-						Console.WriteLine("Incorect selection. Please, try again");
-						showAgainBooks = false;
-						break;
-				}
-			}
-
-			return showAgainMain;
-		}
 
 		private Book ReadBook(string mode)
 		{
@@ -162,13 +257,14 @@ namespace LibraryManagementConsoleApp
 					string ISBN = Console.ReadLine();
 
 
-					if (mode == "edit") { 
-                    Console.WriteLine("Is book avaiable? Press Y for yes and N for no"	);
+					if (mode == "edit")
+					{
+						Console.WriteLine("Is book avaiable? Press Y for yes and N for no");
 						bool isBookAvaiable = CheckAvailability();
 						book.IsAvailable = isBookAvaiable;
 					}
 
-                    book.Title = title;
+					book.Title = title;
 					book.Author = autor;
 					book.ISBN = ISBN;
 
@@ -190,7 +286,7 @@ namespace LibraryManagementConsoleApp
 			bool showAgain = false;
 
 			while (!showAgain)
-			{ 
+			{
 				Console.WriteLine("Is book avaiable? Press Y for yes and N for no");
 				ConsoleKeyInfo response = Console.ReadKey();
 
@@ -204,7 +300,7 @@ namespace LibraryManagementConsoleApp
 					case 'N':
 						return false;
 
-					default: 
+					default:
 						Console.WriteLine("Inncorect input. Please, try again");
 						showAgain = false;
 						break;
@@ -216,13 +312,17 @@ namespace LibraryManagementConsoleApp
 
 		private void ShowBookList(Book[] books)
 		{
+			if (books.Length < 1)
+			{
+				Console.WriteLine("The list of books is empty.");
+			}
 
 			int index = 1;
 			foreach (Book b in books)
 			{
-				string available = b.IsAvailable ? "available" : "not available";
+				string available = b.IsAvailable ? "yes" : "no";
 
-				Console.WriteLine($"\n{index}. {b.Title}, {b.Author}, {b.ISBN}, {available}");
+				Console.WriteLine($"\n{index}. Title: {b.Title}, Author: {b.Author}, ISBN: {b.ISBN}, Is available: {available}");
 				index++;
 			}
 		}
