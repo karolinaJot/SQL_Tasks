@@ -42,7 +42,7 @@ namespace LibraryManagementConsoleApp
 
 					case 's':
 					case 'S':
-						showAgainBooks = SelectSearchType();
+						showAgainBooks = SearchBook();
 						break;
 
 					case 'q':
@@ -61,7 +61,7 @@ namespace LibraryManagementConsoleApp
 			return showAgainMain;
 		}
 
-		private bool SelectSearchType()
+		private bool SearchBook()
 		{
 			bool showAgain = false;
 			bool showAgainBookActions = true;
