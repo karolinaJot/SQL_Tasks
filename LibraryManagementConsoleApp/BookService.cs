@@ -43,7 +43,7 @@ namespace LibraryManagementConsoleApp
 
 					case 's':
 					case 'S':
-						showAgainBooks = SelectSearch();
+						showAgainBooks = SearchBook();
 						break;
 					
 					case 'b':
@@ -69,8 +69,7 @@ namespace LibraryManagementConsoleApp
 
 		private bool BorrowBook()
 		{
-			
-			
+			throw new NotImplementedException();
 		}
 
 		private bool SearchBook()
