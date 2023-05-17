@@ -35,7 +35,7 @@ namespace LibraryManagementConsoleApp
 						{
 							Borrower borrower = new Borrower();
 
-							borrower.BorrowerId = reader.GetGuid(reader.GetOrdinal("BorrowerID"));
+							borrower.BorrowerId = reader.GetInt32(reader.GetOrdinal("BorrowerID"));
 							borrower.Name = reader.GetString(reader.GetOrdinal("Name"));
 							borrower.Email = reader.GetString(reader.GetOrdinal("Email"));
 							borrower.Phone = reader.GetString(reader.GetOrdinal("Phone"));
@@ -70,7 +70,7 @@ namespace LibraryManagementConsoleApp
 							{
 								Borrower borrower = new Borrower();
 
-								borrower.BorrowerId = reader.GetGuid(reader.GetOrdinal("BorrowerID"));
+								borrower.BorrowerId = reader.GetInt32(reader.GetOrdinal("BorrowerID"));
 								borrower.Name = reader.GetString(reader.GetOrdinal("Name"));
 								borrower.Email = reader.GetString(reader.GetOrdinal("Email"));
 								borrower.Phone = reader.GetString(reader.GetOrdinal("Phone"));
@@ -106,11 +106,9 @@ namespace LibraryManagementConsoleApp
 					connection.Open();
 
 					using (SqlCommand command =
-						new SqlCommand("INSERT INTO Borrowers (BorrowerID, Name, Email, Phone, TotalBorrowedBooks ) VALUES(@BorrowerID, @Name, @Email, @Phone, @TotalBorrowedBooks)", connection))
+						new SqlCommand("INSERT INTO Borrowers ( Name, Email, Phone, TotalBorrowedBooks ) VALUES( @Name, @Email, @Phone, @TotalBorrowedBooks)", connection))
 					{
-						Guid borrowerId = Guid.NewGuid();
-
-						command.Parameters.AddWithValue("@BorrowerID", borrowerId);
+					
 						command.Parameters.AddWithValue("@Name", borrower.Name);
 						command.Parameters.AddWithValue("@Email", borrower.Email);
 						command.Parameters.AddWithValue("@Phone", borrower.Phone);
@@ -139,7 +137,7 @@ namespace LibraryManagementConsoleApp
 			}
 		}
 
-		public void DeleteBorrower(Guid id)
+		public void DeleteBorrower(int id)
 		{
 			using (SqlConnection connection = new SqlConnection(connectionString))
 			{

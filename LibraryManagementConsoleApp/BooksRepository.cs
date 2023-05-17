@@ -29,7 +29,7 @@ namespace LibraryManagementConsoleApp
 						while (reader.Read())
 						{
 							Book book = new Book();
-							book.BookId = reader.GetGuid(reader.GetOrdinal("BookId"));
+							book.BookId = reader.GetInt32(reader.GetOrdinal("BookId"));
 							book.Title = reader.GetString(reader.GetOrdinal("Title"));
 							book.Author = reader.GetString(reader.GetOrdinal("Author"));
 							book.ISBN = reader.GetString(reader.GetOrdinal("ISBN"));
@@ -54,11 +54,8 @@ namespace LibraryManagementConsoleApp
 					connection.Open();
 
 					using (SqlCommand command =
-						new SqlCommand("INSERT INTO Books (BookId, Title, Author, ISBN, Availability ) VALUES(@BookId, @Title, @Author, @ISBN, @Availability)", connection))
+						new SqlCommand("INSERT INTO Books ( Title, Author, ISBN, Availability ) VALUES( @Title, @Author, @ISBN, @Availability)", connection))
 					{
-						Guid bookId = Guid.NewGuid();
-
-						command.Parameters.AddWithValue("@BookId", bookId);
 						command.Parameters.AddWithValue("@Title", book.Title);
 						command.Parameters.AddWithValue("@Author", book.Author);
 						command.Parameters.AddWithValue("@ISBN", book.ISBN);
@@ -87,7 +84,7 @@ namespace LibraryManagementConsoleApp
 			}
 		}
 
-		public void DeleteBook(Guid id)
+		public void DeleteBook(int id)
 		{
 			using (SqlConnection connection = new SqlConnection(connectionString))
 			{
@@ -185,7 +182,7 @@ namespace LibraryManagementConsoleApp
 							while (reader.Read())
 							{
 								Book book = new Book();
-								book.BookId = reader.GetGuid(reader.GetOrdinal("BookId"));
+								book.BookId = reader.GetInt32(reader.GetOrdinal("BookId"));
 								book.Title = reader.GetString(reader.GetOrdinal("Title"));
 								book.Author = reader.GetString(reader.GetOrdinal("Author"));
 								book.ISBN = reader.GetString(reader.GetOrdinal("ISBN"));
