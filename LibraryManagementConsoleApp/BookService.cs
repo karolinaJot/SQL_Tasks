@@ -67,12 +67,7 @@ namespace LibraryManagementConsoleApp
 			return showAgainMain;
 		}
 
-		private bool BorrowBook()
-		{
-			throw new NotImplementedException();
-		}
-
-		private bool SearchBook()
+		private bool SelectSearchType()
 		{
 			bool showAgain = false;
 			bool showAgainBookActions = true;
